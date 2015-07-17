@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.dao.CourseMapper" >
+  <resultMap id="BaseResultMap" type="com.spring.model.Course" >
+    <id column="cno" property="cno" jdbcType="CHAR" />
+    <result column="cname" property="cname" jdbcType="VARCHAR" />
+    <result column="ctimes" property="ctimes" jdbcType="INTEGER" />
+    <result column="csummary" property="csummary" jdbcType="VARCHAR" />
+    <result column="cimage" property="cimage" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    cno, cname, ctimes, csummary, cimage
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+  	select *
+  	from course;
+  </select>
+  
+  <select id="selectBycno" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select * 
+  	from course
+  	where cno=#{0};
+  </select>
+  
+  <insert id="insertAll" parameterType="java.lang.String">
+  	insert 
+  	into course(cno,cname,csummary,cimage)
+  	values(#{0},#{1},#{2},#{3});
+  </insert>
+  
+  <delete id="deleteBykey" parameterType="java.lang.String">
+  	delete
+  	from course
+  	where cno = #{0};
+  </delete>
+
+  <update id="updateToimage" parameterType="java.lang.String">
+  	update course
+  	set cimage=#{1}
+  	where cno=#{0}
+  </update>
+  
+  <update id="updateCMY" parameterType="java.lang.String">
+  	update course
+  	set cname = #{1},csummary=#{2}
+  	where cno = #{0}
+  </update>
+</mapper>

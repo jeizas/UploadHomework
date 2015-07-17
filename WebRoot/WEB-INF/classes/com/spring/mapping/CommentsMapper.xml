@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.dao.CommentsMapper" >
+  <resultMap id="BaseResultMap" type="com.spring.model.Comments" >
+    <id column="comment" property="comment" jdbcType="CHAR" />
+    <result column="comtime" property="comtime" jdbcType="DATE" />
+    <result column="somscore" property="somscore" jdbcType="CHAR" />
+    <result column="comremark" property="comremark" jdbcType="VARCHAR" />
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+    comment, comtime, somscore, comremark
+  </sql>
+
+  <update id="updateBycomment" parameterType="java.util.Map">
+  	update comments
+  	set comtime=#{comtime} ,somscore=#{comscore} ,comremark=#{comremark}
+  	where comment=#{comment}
+  </update>
+  
+  <insert id="insertComments"  parameterType="java.util.Map">
+  	insert 
+  	into comments(comment,comtime,somscore,comremark)
+  	values (#{comment},#{comtime},#{comscore},#{comremark});
+  </insert>
+  
+  <select id="selectBycomment" resultMap="BaseResultMap"  parameterType="java.util.Map">
+  	select *
+  	from comments
+  	where comment=#{0}
+  </select>
+
+</mapper>

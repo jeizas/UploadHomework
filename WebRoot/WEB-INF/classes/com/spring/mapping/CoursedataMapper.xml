@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.dao.CoursedataMapper" >
+  <resultMap id="BaseResultMap" type="com.spring.model.Coursedata" >
+    <result column="cno" property="cno" jdbcType="CHAR" />
+    <result column="dname" property="dname" jdbcType="VARCHAR" />
+    <result column="dfile" property="dfile" jdbcType="VARCHAR" />
+    <result column="dsummary" property="dsummary" jdbcType="VARCHAR" />
+    <result column="dtime" property="dtime" jdbcType="DATE" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    cno, dname, dfile, dsummary, dtime
+  </sql>
+  
+  <insert id="insert" parameterType="com.spring.model.Coursedata" >
+    insert into coursedata (cno, dname, dfile, 
+      dsummary, dtime)
+    values (#{cno,jdbcType=CHAR}, #{dname,jdbcType=VARCHAR}, #{dfile,jdbcType=VARCHAR}, 
+      #{dsummary,jdbcType=VARCHAR}, #{dtime,jdbcType=DATE})
+  </insert>
+  
+  <select id="selectBycno" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select *
+  	from coursedata
+  	where cno=#{0}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select *
+  	from coursedata
+  	order by dtime desc;
+  </select>
+	
+  <delete id="deleteBykey" parameterType="java.lang.String">
+  	delete
+  	from coursedata
+  	where cno=#{0} and dname=#{1}
+  </delete>
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.dao.SCMapper" >
+  <resultMap id="BaseResultMap" type="com.spring.model.SC" >
+ 	<id column="sno" property="sno" jdbcType="CHAR" />
+    <id column="cno" property="cno" jdbcType="CHAR" />
+    <id column="sctimes" property="sctimes" jdbcType="INTEGER" />
+    <result column="scfile" property="scfile" jdbcType="VARCHAR" />
+    <result column="sctime" property="sctime" jdbcType="DATE"  />
+    <result column="allowlook" property="allowlook" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    sno, cno, sctimes, scfile, sctime, allowlook
+  </sql>
+  
+  <resultMap id="scfileResultMap" type="java.lang.String" >
+    <result column="scfile" property="scfile" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectAllbykey" resultMap="scfileResultMap" parameterType="java.util.Map">
+  	select scfile
+  	from sc
+  	where  sno = #{sno}  
+  			and  cno = #{cno} 
+  			and  sctimes = #{sctimes}
+  	order by sctimes desc;
+  </select>
+
+    <update id="updatebykey" parameterType="com.spring.model.SC">
+  	update sc
+  	set scfile=#{scfile} ,sctime=#{sctime}
+  	where sno=#{sno}     and   cno= #{cno}  and  sctimes=#{sctimes};
+  </update>
+ 
+  <insert id="insertSelective" parameterType="com.spring.model.SC" >
+    insert 
+ 	into sc (sno,cno,sctimes,scfile,sctime)
+ 	values ( #{sno},#{cno}, #{sctimes}, #{scfile},#{sctime});
+  </insert>
+  
+  <select id="selectBysnocno" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select *
+  	from sc
+  	where sno=#{0} and cno=#{1}
+  	order by sctimes desc;
+  </select>
+  
+  <select  id="getscFromsnocnoByPage" resultMap="BaseResultMap"  parameterType="java.util.Map">
+  	select *
+  	from sc
+  	where sno=#{sno} and cno=#{cno}
+  	order by sctimes desc
+  	limit #{startRow},#{pageSize};
+  </select>
+
+  
+  <select id="selectBysclasstimes" resultMap="BaseResultMap" parameterType="java.util.Map">
+	select cno,sc.sno,sctimes,scfile,sctime,allowlook
+	from student,sc
+	where student.sno=sc.sno and sclass=#{sclass} and sctimes=#{sctimes} and cno=#{cno}
+	order by sctimes desc;
+  </select>
+  
+  <select id="getscFromsclasstimesByPage" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select cno,sc.sno,sctimes,scfile,sctime,allowlook
+	from student,sc
+	where student.sno=sc.sno and sclass=#{sclass} and sctimes=#{sctimes} and cno=#{cno}
+	order by sctimes desc
+	limit #{startRow},#{pageSize};
+  </select>
+  
+  
+  <select id="selectBycno" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select *
+  	from sc
+  	where sc.cno=#{0}
+  	order by sctimes desc;
+  </select>
+  
+  <select id="getscFromcnoByPage" resultMap="BaseResultMap" parameterType="java.util.Map">
+ 	select *
+  	from sc
+  	where cno=#{cno}
+  	order by sctimes desc
+  	limit #{startRow},#{pageSize};
+  </select>
+  
+  <select id="selectBysnocnosctimes" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select *
+  	from sc
+  	where  sno = #{sno}  
+  			and  cno = #{cno} 
+  			and  sctimes = #{sctimes}
+  	order by sctimes desc;
+  </select>
+  
+  <update id="updateToscfile" parameterType="java.util.Map">
+  	update sc
+  	set scfile=#{scfile}
+  	where sno = #{sno}  
+  			and  cno = #{cno} 
+  			and  sctimes = #{sctimes};
+  </update>
+  
+  <update id="updateTOallowlook" parameterType="java.lang.String">
+  	update sc
+  	set allowlook='checked'
+  	where sc.sctimes=#{1} and cno=#{0}
+  </update>
+  
+  <update id="updateTolook" parameterType="java.util.Map">
+   update sc
+   set allowlook=#{allowlook}
+   where sno=#{sno} and cno=#{cno} and sctimes=#{sctimes};
+  </update>
+
+</mapper>

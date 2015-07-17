@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.dao.StudentMapper" >
+  <resultMap id="BaseResultMap" type="com.spring.model.Student" >
+    <id column="sno" property="sno" jdbcType="CHAR" />
+    <result column="spwd" property="spwd" jdbcType="CHAR" />
+    <result column="sname" property="sname" jdbcType="VARCHAR" />
+    <result column="smajor" property="smajor" jdbcType="VARCHAR" />
+    <result column="sgrade" property="sgrade" jdbcType="CHAR" />
+    <result column="sclass" property="sclass" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    sno, spwd, sname, smajor, sgrade, sclass
+  </sql>
+	
+  <select id="getAll"	resultMap="BaseResultMap" >
+  	select *
+  	from student;
+  </select>
+  	
+  <select id="selectBysno" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select *
+  	from student
+  	where sno=#{0};
+  </select>
+  
+  <resultMap id="classResult" type="java.lang.String" >
+    <result column="sclass" property="class" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectSclass" resultMap="classResult" >
+  	select distinct sclass
+  	from student;
+  </select>
+  
+  <select id="selectBysclas" resultMap="BaseResultMap">
+    select *
+    from student
+    where sclass='1203';
+  </select>
+  
+  <insert id="insertAll" parameterType="java.lang.String">
+  	insert 
+  	into student(sno,spwd,sname,smajor,sgrade,sclass)
+  	values(#{0},#{1},#{2},#{3},#{4},#{5});
+  </insert>
+  
+  <delete id="deleteBykey" parameterType="java.lang.String">
+  	delete
+  	from student
+  	where sno = #{0};
+  </delete>
+  
+  <update id="updateBykey" parameterType="java.lang.String">
+  	update student 
+  	set sname=#{2},spwd = #{1},smajor = #{3},sgrade = #{4}, sclass = #{5}
+  	where sno = #{0}
+  </update>
+  
+  <select id="selectUnupload" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select *
+  	from student
+  	where sclass =#{sclass}
+  			and sno not in (
+  				select sno
+  				from sc
+  				where cno = #{cno} and sctimes = #{sctimes}  );
+  </select>
+  
+  <select id="getstudentFromsnocnoByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select *
+  	from student
+  	where sclass =#{sclass}
+  			and sno not in (
+  				select sno
+  				from sc
+  				where cno = #{cno} and sctimes = #{sctimes}  )
+  	limit #{startRow},#{pageSize};
+  </select>
+  
+  <update id="updatePassword" parameterType="java.lang.String">
+  	update teacher
+  	set tpwd=#{1}
+  	where tno=#{0};
+  </update>
+  
+</mapper>

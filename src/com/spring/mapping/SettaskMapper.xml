@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spring.dao.SettaskMapper" >
+  <resultMap id="BaseResultMap" type="com.spring.model.Settask" >
+    <id column="cno" property="cno" jdbcType="CHAR" />
+    <id column="sctimes" property="sctimes" jdbcType="INTEGER" />
+    <result column="stoptime" property="stoptime" jdbcType="DATE"/>
+    <result column="stitle" property="stitle" jdbcType="VARCHAR" />
+    <result column="stcontent" property="stcontent" jdbcType="VARCHAR" />
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+    cno, sctimes, stoptime, stitle, stcontent
+  </sql>
+ 
+  <select id="getAll" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select *
+  	from settask
+  	where cno=#{0};
+  </select>
+  
+  <select id="selectBycnosctimes" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select *
+  	from settask
+  	where cno=#{0} and sctimes=#{1};
+  </select> 
+
+  <select id="selectBycno" parameterType="java.lang.String" resultMap="BaseResultMap">
+  		select *
+  		from settask
+  		where cno=#{0}
+  </select>
+  
+  <resultMap id="MaxResultMap" type="java.lang.String" >
+    <result column="MAX(sctimes)" property="sctimes" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="selectsctimeMax" parameterType="java.lang.String" resultMap="MaxResultMap">
+  	select MAX(sctimes)
+  	from settask
+  	where cno=#{0}
+  </select>
+  
+  <insert id="insertAll" parameterType="java.util.Map">
+    insert 
+    into settask(cno, sctimes, stoptime, stitle, stcontent)
+    values  ( #{cno}, #{_times}, #{stoptime}, #{stitle}, #{stcontent});
+  </insert>
+  
+  <update id="updateBykey" parameterType="java.util.Map">
+  	update settask
+  	set stoptime=#{stoptime}, stitle=#{stitle}, stcontent=#{stcontent}
+  	where cno=#{cno} and sctimes=#{sctimes}
+  </update>
+  
+</mapper>
